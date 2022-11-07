@@ -139,7 +139,7 @@ const Places = ({
 				{location && (
 					<Stack
 						direction='column'
-						justifyContent='center'
+						// justifyContent='center'
 						alignItems='flex-start'
 						sx={{
 							// set max height to 100% - the size of the content above it (511px - 520 for simplicity)
@@ -153,7 +153,7 @@ const Places = ({
 								key={incident.incident_code}
 								variant='soft'
 								color='info'
-								sx={{ borderRadius: 10 }}>
+								sx={{ borderRadius: 10, margin: 'auto', marginLeft: '0px'}}>
 								<Stack
 									direction='column'
 									justifyContent='center'
