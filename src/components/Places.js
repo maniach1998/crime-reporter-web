@@ -16,6 +16,8 @@ import Stack from '@mui/material/Stack';
 
 import mockData from '../mockData';
 
+const SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST = 520;
+
 const Places = ({
 	location,
 	setLocation,
@@ -137,15 +139,21 @@ const Places = ({
 				{location && (
 					<Stack
 						direction='column'
-						justifyContent='center'
+						// justifyContent='center'
 						alignItems='flex-start'
-						spacing={2}>
+						sx={{
+							// set max height to 100% - the size of the content above it (511px - 520 for simplicity)
+							maxHeight: `calc(100vh - ${SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST}px)`,
+							overflowY: 'scroll'
+						}}
+						spacing={2}
+						>
 						{APIresponse.incidents.map((incident) => (
 							<Sheet
 								key={incident.incident_code}
 								variant='soft'
 								color='info'
-								sx={{ borderRadius: 10 }}>
+								sx={{ borderRadius: 10, margin: 'auto', marginLeft: '0px'}}>
 								<Stack
 									direction='column'
 									justifyContent='center'
