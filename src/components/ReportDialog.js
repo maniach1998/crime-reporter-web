@@ -1,20 +1,32 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { TextField } from '@mui/material';
+import { Input, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
-
+// import { usePlacesWidget } from 'react-google-autocomplete';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { DateTimePicker } from '@mui/x-date-pickers';
+import Autocomplete from '@mui/material/Autocomplete';
 
 var currentDate = new Date();
 
 
 const ReportDialog = ({ open, onClose }) => {
+//   const { ref } = usePlacesWidget({
+// 	apiKey:'AIzaSyA2EahkvqFTyxK4Taak5jkgQmgLbsdPzq0',
+// 	onPlaceSelected: (place) => {
+// 		console.log(place);
+// 	},
+// 	options: {
+// 		types: ["(regions)"],
+// 	}
+//   });
+
   return (
 	<Dialog 
 		open={open}
@@ -36,30 +48,56 @@ const ReportDialog = ({ open, onClose }) => {
 			</IconButton>
 		</DialogTitle>
 		<DialogContent>
-			<Typography>
+			<Typography
+				sx={{
+					marginBottom: '5px'
+				}}
+			>
 				Enter a title of the incident that will appear on the map.
 			</Typography>
 			<DateTimePicker
 				onChange={() => {}}
 				renderInput={(params) => <TextField fullWidth {...params} />}
 			/>
-			{/* TODO: convert this to this https://www.npmjs.com/package/react-google-autocomplete */}
-			<TextField 
-				label="Address of the incident"
-				fullWidth
-				variant="outlined"
-			/>
+			<Typography
+				sx={{
+					marginTop: '20px',
+					marginBottom: '5px'
+				}}
+			>
+				Enter a short, descriptive title for the incident.
+			</Typography>
 			<TextField
-				label="Enter a short, descriptive title"
+				label="Title"
 				fullWidth
 				variant="outlined"
 			/>
+			<Typography
+				sx={{
+					marginTop: '20px',
+					marginBottom: '5px'
+				}}
+			>
+				Enter a longer description.
+			</Typography>
 			<TextField 
-				label="Enter a description"
+				label="Description"
 				fullWidth
 				multiline
 				rows={4}
-				maxRows={Infinity}
+			/>
+			<Typography
+				sx={{
+					marginTop: '20px',
+					marginBottom: '5px'
+				}}
+			>
+				Enter the address of the incident.
+			</Typography>
+			{/* TODO: replace this with something better, the react-google-autocomplete
+			is more robust but I can't understand how the MaterialUI example works */}
+			<GooglePlacesAutocomplete
+				apiKey={'AIzaSyA2EahkvqFTyxK4Taak5jkgQmgLbsdPzq0'}
 			/>
 		</DialogContent>
 	</Dialog>
