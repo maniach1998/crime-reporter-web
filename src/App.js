@@ -11,6 +11,9 @@ import {
   extendTheme as extendJoyTheme,
   useColorScheme,
 } from '@mui/joy/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 // this too.
 const muiTheme = extendMuiTheme({
@@ -86,9 +89,11 @@ const muiTheme = extendMuiTheme({
 
 function App() {
 	return (
-		<CssVarsProvider theme={theme}>
-			<Home />
-		</CssVarsProvider>
+		<LocalizationProvider dateAdapter={AdapterMoment}>
+			<CssVarsProvider theme={theme}>
+				<Home />
+			</CssVarsProvider>
+		</LocalizationProvider>
 	);
 }
 

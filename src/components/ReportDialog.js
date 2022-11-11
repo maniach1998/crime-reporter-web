@@ -9,35 +9,57 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
 
+import { DateTimePicker } from '@mui/x-date-pickers';
+
+var currentDate = new Date();
+
+
 const ReportDialog = ({ open, onClose }) => {
   return (
 	<Dialog 
 		open={open}
 		onClose={onClose}
 	>
-		{/* TODO: align this to the right side */}
-		<IconButton 
-			aria-label="close"
-			onClick={onClose}
+		<DialogTitle
+			sx={{
+				display: 'flex',
+				justifyContent: 'space-between',
+				alignItems: 'center'
+			}}
 		>
-			<Close />
-		</IconButton>
-		<DialogTitle>Report a Crime</DialogTitle>
+			<h2>Report a Crime</h2>
+			<IconButton 
+				aria-label="close"
+				onClick={onClose}
+			>
+				<Close />
+			</IconButton>
+		</DialogTitle>
 		<DialogContent>
 			<Typography>
 				Enter a title of the incident that will appear on the map.
 			</Typography>
-			{/* TODO:
-			- date/time picker
-			- location
-			- title of a crime 
-			- description of crime
-			- button to close it
-			*/}
+			<DateTimePicker
+				onChange={() => {}}
+				renderInput={(params) => <TextField fullWidth {...params} />}
+			/>
+			{/* TODO: convert this to this https://www.npmjs.com/package/react-google-autocomplete */}
+			<TextField 
+				label="Address of the incident"
+				fullWidth
+				variant="outlined"
+			/>
 			<TextField
 				label="Enter a short, descriptive title"
 				fullWidth
 				variant="outlined"
+			/>
+			<TextField 
+				label="Enter a description"
+				fullWidth
+				multiline
+				rows={4}
+				maxRows={Infinity}
 			/>
 		</DialogContent>
 	</Dialog>
