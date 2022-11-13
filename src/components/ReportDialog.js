@@ -1,36 +1,35 @@
-import React, { useRef } from 'react'
-
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import { Input, TextField } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import React, { useState } from 'react'
+import { 
+	Button, 
+	TextField,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	Typography,
+	IconButton
+} from '@mui/material';
 import Close from '@mui/icons-material/Close';
-// import { usePlacesWidget } from 'react-google-autocomplete';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { DateTimePicker } from '@mui/x-date-pickers';
-import Autocomplete from '@mui/material/Autocomplete';
+import MyAutocomplete from './MyAutocomplete';
 
-var currentDate = new Date();
-
+var date = new Date();
 
 const ReportDialog = ({ open, onClose }) => {
-//   const { ref } = usePlacesWidget({
-// 	apiKey:'AIzaSyA2EahkvqFTyxK4Taak5jkgQmgLbsdPzq0',
-// 	onPlaceSelected: (place) => {
-// 		console.log(place);
-// 	},
-// 	options: {
-// 		types: ["(regions)"],
-// 	}
-//   });
+  const [reportTime, setReportTime] = useState(date.toUTCString());
+  const [reportAddr, setReportAddr] = useState("");
+  const [reportTitle, setReportTitle] = useState("");
+  const [reportDesc, setReportDesc] = useState("");
 
   return (
 	<Dialog 
 		open={open}
 		onClose={onClose}
+		style={{
+			// the dropdown is next to the dialog root, not inside
+			"& + .pac-container": {
+				zIndex: 9999
+			}
+		}}
 	>
 		<DialogTitle
 			sx={{
@@ -53,11 +52,27 @@ const ReportDialog = ({ open, onClose }) => {
 					marginBottom: '5px'
 				}}
 			>
-				Enter a title of the incident that will appear on the map.
+				Enter the date and time the incident took place.
 			</Typography>
 			<DateTimePicker
-				onChange={() => {}}
+				value={reportTime}
+				onChange={(value) => {setReportTime(value)}}
 				renderInput={(params) => <TextField fullWidth {...params} />}
+			/>
+			<Typography
+				sx={{
+					marginTop: '20px',
+					marginBottom: '5px'
+				}}
+			>
+				Enter the address of the incident.
+			</Typography>
+			{/* 
+				apiKey={'AIzaSyA2EahkvqFTyxK4Taak5jkgQmgLbsdPzq0'}
+				for some reason this doesn't require the api key?
+			*/}
+			<MyAutocomplete 
+				stateFunc={setReportAddr}
 			/>
 			<Typography
 				sx={{
@@ -68,9 +83,10 @@ const ReportDialog = ({ open, onClose }) => {
 				Enter a short, descriptive title for the incident.
 			</Typography>
 			<TextField
-				label="Title"
+				placeholder="Title"
 				fullWidth
 				variant="outlined"
+				onChange={(event) => {setReportTitle(event.target.value)}}
 			/>
 			<Typography
 				sx={{
@@ -81,24 +97,25 @@ const ReportDialog = ({ open, onClose }) => {
 				Enter a longer description.
 			</Typography>
 			<TextField 
-				label="Description"
+				placeholder="Description"
 				fullWidth
 				multiline
 				rows={4}
+				onChange={(event) => {setReportDesc(event.target.value)}}
 			/>
-			<Typography
+			<Button
 				sx={{
-					marginTop: '20px',
-					marginBottom: '5px'
+					marginTop: '10px',
+					width: '100%'
 				}}
+				onClick={() => {
+						console.log(`Time: ${reportTime}; Address: ${reportAddr}; Title: ${reportTitle}; Desc: ${reportDesc}`);
+						onClose()
+					}
+				}
 			>
-				Enter the address of the incident.
-			</Typography>
-			{/* TODO: replace this with something better, the react-google-autocomplete
-			is more robust but I can't understand how the MaterialUI example works */}
-			<GooglePlacesAutocomplete
-				apiKey={'AIzaSyA2EahkvqFTyxK4Taak5jkgQmgLbsdPzq0'}
-			/>
+				Submit
+			</Button>
 		</DialogContent>
 	</Dialog>
   )
