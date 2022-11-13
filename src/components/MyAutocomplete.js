@@ -3,6 +3,9 @@ import { Component } from 'react';
 import TextField from '@mui/material/TextField'
 import { Autocomplete } from '@react-google-maps/api';
 
+// based off this example
+// https://react-google-maps-api-docs.netlify.app/#autocomplete
+
 class MyAutocomplete extends Component {
 	constructor (props) {
 		super(props) 
@@ -37,12 +40,6 @@ class MyAutocomplete extends Component {
 			>
 				<TextField
 					fullWidth
-					// variant="outline"
-					// label="Address"
-					// value={reportAddr}
-					// onChange={(event) => {
-					// 	console.log(event.target.value)
-					// 	setReportAddr(event.target.value)}}
 				/>
 			</Autocomplete>
 		)

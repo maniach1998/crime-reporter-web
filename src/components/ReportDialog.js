@@ -25,8 +25,10 @@ import MyAutocomplete from './MyAutocomplete';
 // 	}
 // }
 
+var date = new Date();
+
 const ReportDialog = ({ open, onClose }) => {
-  const [reportTime, setReportTime] = useState("");
+  const [reportTime, setReportTime] = useState(date.toUTCString());
   const [reportAddr, setReportAddr] = useState("");
   const [reportTitle, setReportTitle] = useState("");
   const [reportDesc, setReportDesc] = useState("");
@@ -66,6 +68,7 @@ const ReportDialog = ({ open, onClose }) => {
 				Enter the date and time the incident took place.
 			</Typography>
 			<DateTimePicker
+				value={reportTime}
 				onChange={(value) => {setReportTime(value)}}
 				renderInput={(params) => <TextField fullWidth {...params} />}
 			/>
@@ -114,8 +117,14 @@ const ReportDialog = ({ open, onClose }) => {
 				onChange={(event) => {setReportDesc(event.target.value)}}
 			/>
 			<Button
-				onClick={() => 
-					console.log(`Time: ${reportTime}, Address: ${reportAddr}, Title: ${reportTitle}, Desc: ${reportDesc}`)
+				sx={{
+					marginTop: '10px',
+					width: '100%'
+				}}
+				onClick={() => {
+						console.log(`Time: ${reportTime}; Address: ${reportAddr}; Title: ${reportTitle}; Desc: ${reportDesc}`);
+						onClose()
+					}
 				}
 			>
 				Submit
