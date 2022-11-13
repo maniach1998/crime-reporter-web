@@ -1,11 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useState } from 'react'
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 // TODO: put all the imports inside this
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 // import { ThemeProvider, createTheme } from '@mui/system';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -15,13 +15,21 @@ import Close from '@mui/icons-material/Close';
 import { DateTimePicker } from '@mui/x-date-pickers';
 // import Autocomplete from '@mui/material/Autocomplete';
 import { Autocomplete } from '@react-google-maps/api';
+import MyAutocomplete from './MyAutocomplete';
 
-function textHandler(){
-
-}
-
+// function onPlaceChanged () {
+// 	if (this.autocomplete !== null) {
+// 		console.log(this.autocomplete.getPlace())
+// 	} else {
+// 		console.log('Autocomplete is not loaded yet!')
+// 	}
+// }
 
 const ReportDialog = ({ open, onClose }) => {
+  const [reportTime, setReportTime] = useState("");
+  const [reportAddr, setReportAddr] = useState("");
+  const [reportTitle, setReportTitle] = useState("");
+  const [reportDesc, setReportDesc] = useState("");
 
   return (
 	<Dialog 
@@ -58,7 +66,7 @@ const ReportDialog = ({ open, onClose }) => {
 				Enter the date and time the incident took place.
 			</Typography>
 			<DateTimePicker
-				onChange={() => {}}
+				onChange={(value) => {setReportTime(value)}}
 				renderInput={(params) => <TextField fullWidth {...params} />}
 			/>
 			<Typography
@@ -69,22 +77,13 @@ const ReportDialog = ({ open, onClose }) => {
 			>
 				Enter the address of the incident.
 			</Typography>
-			{/* TODO: replace this with something better, the react-google-autocomplete
-			is more robust but I can't understand how the MaterialUI example works */}
 			{/* 
 				apiKey={'AIzaSyA2EahkvqFTyxK4Taak5jkgQmgLbsdPzq0'}
 				for some reason this doesn't require the api key?
 			*/}
-			<Autocomplete
-				// onLoad={this.onLoad}
-				onPlacechanged={() => {console.log('place changed')}}
-			>
-				<TextField
-					fullWidth
-					// variant="outline"
-					// label="Address"
-				/>
-			</Autocomplete>
+			<MyAutocomplete 
+				stateFunc={setReportAddr}
+			/>
 			<Typography
 				sx={{
 					marginTop: '20px',
@@ -97,6 +96,7 @@ const ReportDialog = ({ open, onClose }) => {
 				label="Title"
 				fullWidth
 				variant="outlined"
+				onChange={(event) => {setReportTitle(event.target.value)}}
 			/>
 			<Typography
 				sx={{
@@ -111,7 +111,15 @@ const ReportDialog = ({ open, onClose }) => {
 				fullWidth
 				multiline
 				rows={4}
+				onChange={(event) => {setReportDesc(event.target.value)}}
 			/>
+			<Button
+				onClick={() => 
+					console.log(`Time: ${reportTime}, Address: ${reportAddr}, Title: ${reportTitle}, Desc: ${reportDesc}`)
+				}
+			>
+				Submit
+			</Button>
 		</DialogContent>
 	</Dialog>
   )
