@@ -39,6 +39,12 @@ class MyAutocomplete extends Component {
 				onPlaceChanged={this.onPlaceChanged}
 			>
 				<TextField
+					sx={{
+						"& .MuiInputBase-root":{
+							color:'whitesmoke'
+						}
+					}}
+					color='info'
 					fullWidth
 				/>
 			</Autocomplete>

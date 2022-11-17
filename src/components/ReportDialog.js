@@ -11,6 +11,7 @@ import {
 import Close from '@mui/icons-material/Close';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import MyAutocomplete from './MyAutocomplete';
+import { color } from '@mui/system';
 
 var date = new Date();
 
@@ -24,18 +25,27 @@ const ReportDialog = ({ open, onClose }) => {
 	<Dialog 
 		open={open}
 		onClose={onClose}
-		style={{
+		PaperProps={{
+			style: {
+				backgroundColor: '#111',
+				"& + .pac-container": {
+					zIndex: 9999
+				}
+			}
+		}}
+		/*style={{
 			// the dropdown is next to the dialog root, not inside
 			"& + .pac-container": {
 				zIndex: 9999
 			}
-		}}
+		}}*/
 	>
 		<DialogTitle
 			sx={{
 				display: 'flex',
 				justifyContent: 'space-between',
-				alignItems: 'center'
+				alignItems: 'center',
+				color:'whitesmoke'
 			}}
 		>
 			<h2>Report a Crime</h2>
@@ -49,41 +59,63 @@ const ReportDialog = ({ open, onClose }) => {
 		<DialogContent>
 			<Typography
 				sx={{
-					marginBottom: '5px'
+					marginBottom: '5px',
+					color:'whitesmoke'
 				}}
 			>
-				Enter the date and time the incident took place.
+				Enter the date and time the incident took place:
 			</Typography>
 			<DateTimePicker
+				InputProps={{
+					color:"info"
+				}}
 				value={reportTime}
 				onChange={(value) => {setReportTime(value)}}
-				renderInput={(params) => <TextField fullWidth {...params} />}
+				renderInput={(params) => <TextField fullWidth 					
+					sx={{
+						"& .MuiInputBase-root":{
+							color:'whitesmoke'
+						}
+				}}
+				{...params} />}
 			/>
 			<Typography
 				sx={{
 					marginTop: '20px',
-					marginBottom: '5px'
+					marginBottom: '5px',
+					color:'whitesmoke'
 				}}
 			>
-				Enter the address of the incident.
+				Enter the address of the incident:
 			</Typography>
 			{/* 
 				apiKey={'AIzaSyA2EahkvqFTyxK4Taak5jkgQmgLbsdPzq0'}
 				for some reason this doesn't require the api key?
 			*/}
-			<MyAutocomplete 
+			<MyAutocomplete
 				stateFunc={setReportAddr}
 			/>
 			<Typography
 				sx={{
 					marginTop: '20px',
-					marginBottom: '5px'
+					marginBottom: '5px',
+					color:'whitesmoke'
 				}}
 			>
-				Enter a short, descriptive title for the incident.
+				Enter a short, descriptive title for the incident:
 			</Typography>
 			<TextField
-				placeholder="Title"
+				placeholder = "Title"
+				sx={{
+					"& .MuiInputBase-root":{
+						color:'whitesmoke'
+					}
+				}}
+				InputLabelProps = {{
+					style: {color: '#6b6e6c'}
+				}}
+				label="Title"
+				color="info"
 				fullWidth
 				variant="outlined"
 				onChange={(event) => {setReportTitle(event.target.value)}}
@@ -91,13 +123,25 @@ const ReportDialog = ({ open, onClose }) => {
 			<Typography
 				sx={{
 					marginTop: '20px',
-					marginBottom: '5px'
+					marginBottom: '5px',
+					color:'whitesmoke'
 				}}
 			>
-				Enter a longer description.
+				Enter a longer description:
 			</Typography>
 			<TextField 
+				sx={{
+					"& .MuiInputBase-root":{
+						color:'whitesmoke'
+					}
+				}}
+				InputLabelProps = {{
+					style: {color: '#6b6e6c'}
+				}}
 				placeholder="Description"
+				variant="outlined"
+				color="info"
+				label="Description"
 				fullWidth
 				multiline
 				rows={4}
@@ -106,7 +150,11 @@ const ReportDialog = ({ open, onClose }) => {
 			<Button
 				sx={{
 					marginTop: '10px',
-					width: '100%'
+					width: '30%',
+					color:'#5F35AE',
+					left: '37.5%',
+					fontWeight: 'bold',
+					backgroundColor:'lightgrey'
 				}}
 				onClick={() => {
 						console.log(`Time: ${reportTime}; Address: ${reportAddr}; Title: ${reportTitle}; Desc: ${reportDesc}`);
