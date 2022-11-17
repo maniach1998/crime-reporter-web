@@ -75,7 +75,8 @@ const ReportDialog = ({ open, onClose }) => {
 					sx={{
 						"& .MuiInputBase-root":{
 							color:'whitesmoke'
-						}
+						},
+						svg: {color: 'whitesmoke'}
 				}}
 				{...params} />}
 			/>
