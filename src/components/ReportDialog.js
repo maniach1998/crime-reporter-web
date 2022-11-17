@@ -69,9 +69,14 @@ const ReportDialog = ({ open, onClose }) => {
 				InputProps={{
 					color:"info"
 				}}
+				label="Date and Time"
 				value={reportTime}
 				onChange={(value) => {setReportTime(value)}}
-				renderInput={(params) => <TextField fullWidth 					
+				renderInput={(params) => <TextField fullWidth
+					variant='outlined'
+					InputLabelProps = {{
+						style: {color: '#6b6e6c'}
+					}} 					
 					sx={{
 						"& .MuiInputBase-root":{
 							color:'whitesmoke'
