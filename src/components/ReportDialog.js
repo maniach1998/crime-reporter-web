@@ -152,7 +152,7 @@ const ReportDialog = ({ open, onClose }) => {
 					marginTop: '10px',
 					width: '30%',
 					color:'#5F35AE',
-					left: '37.5%',
+					left: '65%',
 					fontWeight: 'bold',
 					backgroundColor:'lightgrey'
 				}}
