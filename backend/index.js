@@ -2,21 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
 const reportRoutes = require('./routes/report');
 
 const app = express();
+dotenv.config();
 
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(
-	'mongodb+srv://default:RSScHJUBgczq7vn7@cluster0.mb5jehj.mongodb.net/?retryWrites=true&w=majority',
-	() => {
-		console.log('Connected to db!');
-	}
-);
+mongoose.connect(process.env.MONGODB_URL, () => {
+	console.log('Connected to db!');
+});
 
 app.use('/api/reports', reportRoutes);
 

@@ -12,14 +12,14 @@ const Home = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const { isLoaded } = useLoadScript({
-		googleMapsApiKey: 'AIzaSyBoU-jUAuFITy9q0ZoHUlR10jd_UA1TqDc',
+		googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY,
 		libraries: libraries,
 	});
 
-	function handleReportClickOpen(){
+	function handleReportClickOpen() {
 		setDialogOpen(true);
 	}
-	function handleDialogClose(){
+	function handleDialogClose() {
 		setDialogOpen(false);
 	}
 
@@ -37,23 +37,19 @@ const Home = () => {
 				setLocation={setLocation}
 			/>
 			{/* https://mui.com/joy-ui/react-button/ */}
-			<Button 
-				variant="solid"
-				color="danger"
-				size="lg"
+			<Button
+				variant='solid'
+				color='danger'
+				size='lg'
 				sx={{
 					position: 'absolute',
 					right: '50px',
-					top: '50px'
+					top: '50px',
 				}}
-				onClick={handleReportClickOpen}
-			>
+				onClick={handleReportClickOpen}>
 				Report an Incident
 			</Button>
-			<ReportDialog 
-				open={dialogOpen}
-				onClose={handleDialogClose}
-			/>
+			<ReportDialog open={dialogOpen} onClose={handleDialogClose} />
 		</div>
 	);
 };
