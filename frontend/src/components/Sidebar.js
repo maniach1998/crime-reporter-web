@@ -68,7 +68,8 @@ const Sidebar = ({ location, setLocation }) => {
 					<Typography
 						level='display1'
 						component='h1'
-						textColor='white'>
+						textColor='white'
+						fontSize='4.5vw'>
 						Cr
 						<Typography variant='plain' color='info' p={0}>
 							i
@@ -80,7 +81,7 @@ const Sidebar = ({ location, setLocation }) => {
 						orter
 					</Typography>
 
-					<Typography level='h6' component='p' textColor='lightgray'>
+					<Typography level='h6' component='p' textColor='lightgray' fontSize='1.4vw'>
 						See the most recently reported crimes in your area.
 					</Typography>
 				</Stack>

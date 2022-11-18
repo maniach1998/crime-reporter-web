@@ -63,6 +63,7 @@ const ReportDialog = ({ open, onClose }) => {
 			<IconButton 
 				aria-label="close"
 				onClick={onClose}
+				color="secondary"
 			>
 				<Close />
 			</IconButton>

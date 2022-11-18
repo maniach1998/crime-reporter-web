@@ -16,7 +16,7 @@ import Stack from '@mui/material/Stack';
 
 import mockData from '../mockData';
 
-const SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST = 520;
+const SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST = 540;
 
 const Places = ({
 	location,
@@ -78,7 +78,7 @@ const Places = ({
 	};
 
 	return (
-		<Box py={2}>
+		<Box sx={{py:2}}>
 			<Stack
 				direction='column'
 				justifyContent='center'
@@ -98,7 +98,7 @@ const Places = ({
 					<List
 						variant='soft'
 						color='neutral'
-						sx={{ width: '100%', borderRadius: 'sm' }}>
+						sx={{ width: '100%', borderRadius: 'sm'}}>
 						{data.map(({ place_id, description }) => (
 							<>
 								<ListItem key={place_id}>
@@ -153,7 +153,7 @@ const Places = ({
 								key={incident.incident_code}
 								variant='soft'
 								color='info'
-								sx={{ borderRadius: 10, margin: 'auto', marginLeft: '0px'}}>
+								sx={{ borderRadius: 10, marginright: 'auto', maxWidth:.98}}>
 								<Stack
 									direction='column'
 									justifyContent='center'
