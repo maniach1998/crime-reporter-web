@@ -8,7 +8,7 @@ import NearMeIcon from '@mui/icons-material/NearMe';
 
 import Places from './Places';
 
-const Sidebar = ({ location, setLocation }) => {
+const Sidebar = ({ location, setLocation, crimes, setCrimes }) => {
 	// for 'use my location' button
 	const [geoPermissions, setGeoPermissions] = useState(null);
 	const [isGettingLocation, setIsGettingLocation] = useState(false);
@@ -81,7 +81,11 @@ const Sidebar = ({ location, setLocation }) => {
 						orter
 					</Typography>
 
-					<Typography level='h6' component='p' textColor='lightgray' fontSize='1.4vw'>
+					<Typography
+						level='h6'
+						component='p'
+						textColor='lightgray'
+						fontSize='1.4vw'>
 						See the most recently reported crimes in your area.
 					</Typography>
 				</Stack>
@@ -152,7 +156,10 @@ const Sidebar = ({ location, setLocation }) => {
 				setLocation={setLocation}
 				currentAddress={currentAddress}
 				setCurrentAddress={setCurrentAddress}
+				isGettingLocation={isGettingLocation}
 				setIsGettingLocation={setIsGettingLocation}
+				crimes={crimes}
+				setCrimes={setCrimes}
 			/>
 		</Box>
 	);

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
+import axios from 'axios';
 import usePlacesAutocomplete, {
 	getGeocode,
 	getLatLng,
@@ -13,8 +14,7 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import Sheet from '@mui/joy/Sheet';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-
-import mockData from '../mockData';
+import CircularProgress from '@mui/joy/CircularProgress';
 
 const SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST = 540;
 
@@ -23,8 +23,12 @@ const Places = ({
 	setLocation,
 	currentAddress,
 	setCurrentAddress,
+	isGettingLocation,
 	setIsGettingLocation,
+	crimes,
+	setCrimes,
 }) => {
+	// set lat and lng of the retrieved location
 	useEffect(() => {
 		if (location) {
 			const geocoder = new window.google.maps.Geocoder();
@@ -49,16 +53,29 @@ const Places = ({
 		}
 	}, [location]);
 
-	const APIresponse = mockData;
+	// fetch crimes in the retrieved location from backend
+	useEffect(() => {
+		if (location && !isGettingLocation) {
+			console.log('finished getting location, fetching crimes');
 
-	console.log(moment(moment.now()).format('YYYY-MM-DD HH:mm:ss'));
-	console.log(
-		moment(moment.now())
-			.day(-7)
-			.startOf('day')
-			.format('YYYY-MM-DD HH:mm:ss')
-	);
-	console.log(mockData.incidents.length);
+			axios
+				.get(
+					`http://localhost:4000/api/reports?lng=${location.lng}&lat=${location.lat}`
+				)
+				.then((res) => {
+					setCrimes(res.data.data);
+				});
+		}
+	}, [location, isGettingLocation]);
+
+	// console.log(moment(moment.now()).format('YYYY-MM-DD HH:mm:ss'));
+	// console.log(
+	// 	moment(moment.now())
+	// 		.day(-7)
+	// 		.startOf('day')
+	// 		.format('YYYY-MM-DD HH:mm:ss')
+	// );
+	// console.log(mockData.incidents.length);
 
 	const {
 		ready,
@@ -78,7 +95,7 @@ const Places = ({
 	};
 
 	return (
-		<Box sx={{py:2}}>
+		<Box sx={{ py: 2 }}>
 			<Stack
 				direction='column'
 				justifyContent='center'
@@ -98,7 +115,7 @@ const Places = ({
 					<List
 						variant='soft'
 						color='neutral'
-						sx={{ width: '100%', borderRadius: 'sm'}}>
+						sx={{ width: '100%', borderRadius: 'sm' }}>
 						{data.map(({ place_id, description }) => (
 							<>
 								<ListItem key={place_id}>
@@ -136,51 +153,82 @@ const Places = ({
 					</Typography>
 				)}
 
-				{location && (
+				{location && !isGettingLocation && crimes === null ? (
 					<Stack
 						direction='column'
-						// justifyContent='center'
-						alignItems='flex-start'
-						sx={{
-							// set max height to 100% - the size of the content above it (511px - 520 for simplicity)
-							maxHeight: `calc(100vh - ${SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST}px)`,
-							overflowY: 'scroll'
-						}}
+						alignItems='center'
+						justifyContent='center'
+						py={2}
 						spacing={2}
-						>
-						{APIresponse.incidents.map((incident) => (
-							<Sheet
-								key={incident.incident_code}
-								variant='soft'
-								color='info'
-								sx={{ borderRadius: 10, marginright: 'auto', maxWidth:.98}}>
-								<Stack
-									direction='column'
-									justifyContent='center'
-									alignItems='flex-start'
-									paddingY={2}
-									paddingX={3}>
-									<Typography level='h5' component='h5'>
-										<strong>
-											{
-												incident.incident_source_original_type
-											}
-										</strong>
-									</Typography>
-									<Typography level='h6' component='h6'>
-										<strong>
-											{incident.incident_address}
-										</strong>
-									</Typography>
-									<Typography level='body1' component='p'>
-										{
-											incident.incident_offense_detail_description
-										}
-									</Typography>
-								</Stack>
-							</Sheet>
-						))}
+						sx={{ width: '100%' }}>
+						<Typography level='body1' component='p' color='info'>
+							<strong>Retrieving crimes...</strong>
+						</Typography>
+						<CircularProgress variant='plain' color='info' />
 					</Stack>
+				) : (
+					<>
+						{crimes && (
+							<Stack
+								direction='column'
+								// justifyContent='center'
+								alignItems='flex-start'
+								sx={{
+									// set max height to 100% - the size of the content above it (511px - 520 for simplicity)
+									maxHeight: `calc(100vh - ${SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST}px)`,
+									overflowY: 'scroll',
+								}}
+								spacing={2}>
+								{crimes.map((incident) => (
+									<Sheet
+										key={incident._id}
+										variant='soft'
+										color='info'
+										sx={{
+											borderRadius: 10,
+											marginright: 'auto',
+											maxWidth: 0.98,
+										}}>
+										<Stack
+											direction='column'
+											justifyContent='center'
+											alignItems='flex-start'
+											paddingY={2}
+											paddingX={3}>
+											<Typography
+												level='h5'
+												component='h5'>
+												<strong>
+													{incident.title}
+												</strong>
+											</Typography>
+											<Typography
+												level='h6'
+												component='h6'>
+												<strong>
+													{incident.address}
+												</strong>
+											</Typography>
+											<Typography
+												level='body2'
+												component='body2'>
+												<strong>
+													{moment(
+														incident.reportedAt
+													).fromNow()}
+												</strong>
+											</Typography>
+											<Typography
+												level='body1'
+												component='p'>
+												{incident.description}
+											</Typography>
+										</Stack>
+									</Sheet>
+								))}
+							</Stack>
+						)}
+					</>
 				)}
 			</Stack>
 		</Box>

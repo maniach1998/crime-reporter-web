@@ -24,16 +24,23 @@ const Home = () => {
 	}
 
 	const [location, setLocation] = useState(null);
+	const [crimes, setCrimes] = useState(null);
 	const mapRef = useRef();
 
 	if (!isLoaded) return <h1>Loading...</h1>;
 
 	return (
 		<div className='container'>
-			<Sidebar location={location} setLocation={setLocation} />
+			<Sidebar
+				location={location}
+				setLocation={setLocation}
+				crimes={crimes}
+				setCrimes={setCrimes}
+			/>
 			<Map
 				mapRef={mapRef}
 				location={location}
+				crimes={crimes}
 				setLocation={setLocation}
 			/>
 			{/* https://mui.com/joy-ui/react-button/ */}

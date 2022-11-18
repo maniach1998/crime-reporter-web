@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import mockData from '../mockData';
+// import mockData from '../mockData';
 
-const Map = ({ mapRef, location, setLocation }) => {
+const Map = ({ mapRef, location, crimes, setLocation }) => {
 	const center = useMemo(
 		() => ({ lat: 40.70835219465311, lng: -74.00525406624838 }),
 		[]
 	);
 	const [marker, setMarker] = useState();
-	const crimes = mockData.incidents;
 	const options = useMemo(
 		() => ({
 			mapId: 'c4bf32b3037c7fe9',
@@ -50,13 +49,13 @@ const Map = ({ mapRef, location, setLocation }) => {
 				}}
 				mapContainerClassName='map-container'
 				options={options}>
-				{location &&
+				{crimes &&
 					crimes.map((crime) => (
 						<Marker
-							key={crime.incident_code}
+							key={crime._id}
 							position={{
-								lat: crime.incident_latitude,
-								lng: crime.incident_longitude,
+								lat: crime.location.coordinates[1],
+								lng: crime.location.coordinates[0],
 							}}
 						/>
 					))}

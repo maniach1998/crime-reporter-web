@@ -1,4 +1,4 @@
-export default {
+module.exports = {
 	total_incidents: 194,
 	total_pages: 2,
 	incidents: [
