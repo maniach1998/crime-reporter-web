@@ -6,7 +6,8 @@ import {
 	DialogTitle,
 	DialogContent,
 	Typography,
-	IconButton
+	IconButton,
+	Snackbar,
 } from '@mui/material';
 import Close from '@mui/icons-material/Close';
 import { DateTimePicker } from '@mui/x-date-pickers';
@@ -19,9 +20,19 @@ const ReportDialog = ({ open, onClose }) => {
   const [reportTime, setReportTime] = useState(date.toUTCString());
   const [reportAddr, setReportAddr] = useState("");
   const [reportTitle, setReportTitle] = useState("");
-  const [reportDesc, setReportDesc] = useState("");
+  const [reportDesc, setReportDesc] = useState("")
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+	if(reason === 'clickaway') {
+		return;
+	}
+
+	setSnackbarOpen(false);
+  }
 
   return (
+	<>
 	<Dialog 
 		open={open}
 		onClose={onClose}
@@ -100,6 +111,7 @@ const ReportDialog = ({ open, onClose }) => {
 			*/}
 			<MyAutocomplete
 				stateFunc={setReportAddr}
+				required
 			/>
 			<Typography
 				sx={{
@@ -125,6 +137,7 @@ const ReportDialog = ({ open, onClose }) => {
 				fullWidth
 				variant="outlined"
 				onChange={(event) => {setReportTitle(event.target.value)}}
+				required
 			/>
 			<Typography
 				sx={{
@@ -152,6 +165,7 @@ const ReportDialog = ({ open, onClose }) => {
 				multiline
 				rows={4}
 				onChange={(event) => {setReportDesc(event.target.value)}}
+				required
 			/>
 			<Button
 				sx={{
@@ -164,7 +178,8 @@ const ReportDialog = ({ open, onClose }) => {
 				}}
 				onClick={() => {
 						console.log(`Time: ${reportTime}; Address: ${reportAddr}; Title: ${reportTitle}; Desc: ${reportDesc}`);
-						onClose()
+						onClose();
+						setSnackbarOpen(true);
 					}
 				}
 			>
@@ -172,6 +187,13 @@ const ReportDialog = ({ open, onClose }) => {
 			</Button>
 		</DialogContent>
 	</Dialog>
+	<Snackbar
+		open={snackbarOpen}
+		autoHideDuration={6000}
+		onClose={handleSnackbarClose}
+		message="Report submitted."
+	/>
+	</>
   )
 }
 
