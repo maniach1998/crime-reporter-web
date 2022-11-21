@@ -15,8 +15,9 @@ import Sheet from '@mui/joy/Sheet';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/joy/CircularProgress';
+import Grid from '@mui/material/Grid';
 
-const SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST = 540;
+const SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST = 600;
 
 const Places = ({
 	location,
@@ -169,64 +170,85 @@ const Places = ({
 				) : (
 					<>
 						{crimes && (
-							<Stack
-								direction='column'
-								// justifyContent='center'
-								alignItems='flex-start'
-								sx={{
-									// set max height to 100% - the size of the content above it (511px - 520 for simplicity)
-									maxHeight: `calc(100vh - ${SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST}px)`,
-									overflowY: 'scroll',
-								}}
-								spacing={2}>
-								{crimes.map((incident) => (
-									<Sheet
-										key={incident._id}
-										variant='soft'
-										color='info'
-										sx={{
-											borderRadius: 10,
-											marginright: 'auto',
-											maxWidth: 0.98,
-										}}>
-										<Stack
-											direction='column'
-											justifyContent='center'
-											alignItems='flex-start'
-											paddingY={2}
-											paddingX={3}>
-											<Typography
-												level='h5'
-												component='h5'>
-												<strong>
-													{incident.title}
-												</strong>
-											</Typography>
-											<Typography
-												level='h6'
-												component='h6'>
-												<strong>
-													{incident.address}
-												</strong>
-											</Typography>
-											<Typography
-												level='body2'
-												component='body2'>
-												<strong>
-													{moment(
-														incident.reportedAt
-													).fromNow()}
-												</strong>
-											</Typography>
-											<Typography
-												level='body1'
-												component='p'>
-												{incident.description}
-											</Typography>
-										</Stack>
-									</Sheet>
-								))}
-							</Stack>
+							// <Stack
+							// 	direction='column'
+							// 	// justifyContent='center'
+							// 	alignItems='flex-start'
+							// 	sx={{
+							// 		// set max height to 100% - the size of the content above it (511px - 520 for simplicity)
+							// 		maxHeight: `calc(100vh - ${SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST}px)`,
+							// 		overflowY: 'scroll',
+							// 	}}
+							//	spacing={2}>
+							<Grid
+								container
+								rowSpacing={2}
+								direction='row'
+								maxHeight={`calc(100vh - ${SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST}px)`}
+								overflow='auto'>
+								{crimes.length !== 0 ? (
+									crimes.map((incident) => (
+										<Grid item sx={{ width: '100%' }}>
+											<Sheet
+												key={incident._id}
+												variant='soft'
+												color='info'
+												sx={{
+													borderRadius: 10,
+													// marginright: 'auto',
+													maxWidth: 0.98,
+												}}>
+												<Stack
+													direction='column'
+													justifyContent='center'
+													alignItems='flex-start'
+													paddingY={2}
+													paddingX={3}>
+													<Typography
+														level='h4'
+														component='h4'>
+														<strong>
+															{incident.title}
+														</strong>
+													</Typography>
+													<Typography
+														level='h6'
+														component='h6'>
+														<strong>
+															{incident.address}
+														</strong>
+													</Typography>
+													<Typography
+														level='body2'
+														component='p'>
+														<strong>
+															{moment(
+																incident.reportedAt
+															).fromNow()}
+														</strong>
+													</Typography>
+													<Typography
+														level='body1'
+														component='p'>
+														{incident.description}
+													</Typography>
+												</Stack>
+											</Sheet>
+										</Grid>
+									))
+								) : (
+									<>
+										<Typography
+											level='h3'
+											component='p'
+											py={3}
+											textColor='white'>
+											🚨No crimes found in this area!🚨
+										</Typography>
+									</>
+								)}
+							</Grid>
+							// </Stack>
 						)}
 					</>
 				)}
