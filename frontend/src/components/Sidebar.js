@@ -55,6 +55,7 @@ const Sidebar = ({ location, setLocation, crimes, setCrimes }) => {
 				width: '20%',
 				padding: '0px 20px',
 				height: '100vh',
+				overflowY: 'auto',
 				backgroundColor: '#111',
 				zIndex: 999,
 			}}>

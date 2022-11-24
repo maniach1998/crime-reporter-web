@@ -1,54 +1,58 @@
-import React from 'react'
+import React from 'react';
 import { Component } from 'react';
-import TextField from '@mui/material/TextField'
+import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@react-google-maps/api';
 
 // based off this example
 // https://react-google-maps-api-docs.netlify.app/#autocomplete
 
 class MyAutocomplete extends Component {
-	constructor (props) {
-		super(props) 
+	constructor(props) {
+		super(props);
 
-		this.autocomplete = null
+		this.autocomplete = null;
 
-		this.onLoad = this.onLoad.bind(this)
-		this.onPlaceChanged = this.onPlaceChanged.bind(this)
-		this.stateFunc=props.stateFunc
+		this.onLoad = this.onLoad.bind(this);
+		this.onPlaceChanged = this.onPlaceChanged.bind(this);
+		this.stateFunc = props.stateFunc;
+		this.locationFunc = props.locationFunc;
 	}
 
-	onLoad (autocomplete) {
-		console.log('autocomplete: ', autocomplete)
+	onLoad(autocomplete) {
+		console.log('autocomplete: ', autocomplete);
 
-		this.autocomplete = autocomplete
+		this.autocomplete = autocomplete;
 	}
-	
-	onPlaceChanged () {
+
+	onPlaceChanged() {
 		if (this.autocomplete !== null) {
-			console.log(this.autocomplete.getPlace())
-			this.stateFunc(this.autocomplete.getPlace().formatted_address)
+			console.log(this.autocomplete.getPlace());
+			this.stateFunc(this.autocomplete.getPlace().formatted_address);
+			this.locationFunc({
+				lat: this.autocomplete.getPlace().geometry.location.lat(),
+				lng: this.autocomplete.getPlace().geometry.location.lng(),
+			});
 		} else {
-			console.log('Autocomplete is not loaded yet!')
+			console.log('Autocomplete is not loaded yet!');
 		}
 	}
 
-	render () {
+	render() {
 		return (
 			<Autocomplete
 				onLoad={this.onLoad}
-				onPlaceChanged={this.onPlaceChanged}
-			>
+				onPlaceChanged={this.onPlaceChanged}>
 				<TextField
 					sx={{
-						"& .MuiInputBase-root":{
-							color:'whitesmoke'
-						}
+						'& .MuiInputBase-root': {
+							color: 'whitesmoke',
+						},
 					}}
 					color='info'
 					fullWidth
 				/>
 			</Autocomplete>
-		)
+		);
 	}
 }
 

@@ -170,33 +170,19 @@ const Places = ({
 				) : (
 					<>
 						{crimes && (
-							// <Stack
-							// 	direction='column'
-							// 	// justifyContent='center'
-							// 	alignItems='flex-start'
-							// 	sx={{
-							// 		// set max height to 100% - the size of the content above it (511px - 520 for simplicity)
-							// 		maxHeight: `calc(100vh - ${SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST}px)`,
-							// 		overflowY: 'scroll',
-							// 	}}
-							//	spacing={2}>
-							<Grid
-								container
-								rowSpacing={2}
-								direction='row'
-								maxHeight={`calc(100vh - ${SIZE_OF_ELEMENTS_ABOVE_SCROLL_LIST}px)`}
-								overflow='auto'>
+							<Grid container rowSpacing={2} direction='row'>
 								{crimes.length !== 0 ? (
 									crimes.map((incident) => (
-										<Grid item sx={{ width: '100%' }}>
+										<Grid
+											key={incident._id}
+											item
+											sx={{ width: '100%' }}>
 											<Sheet
 												key={incident._id}
 												variant='soft'
 												color='info'
 												sx={{
 													borderRadius: 10,
-													// marginright: 'auto',
-													maxWidth: 0.98,
 												}}>
 												<Stack
 													direction='column'
@@ -248,7 +234,6 @@ const Places = ({
 									</>
 								)}
 							</Grid>
-							// </Stack>
 						)}
 					</>
 				)}
