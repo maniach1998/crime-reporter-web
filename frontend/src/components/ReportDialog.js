@@ -10,6 +10,7 @@ import {
 	IconButton,
 	Snackbar,
 } from '@mui/material';
+import CircularProgress from '@mui/joy/CircularProgress';
 import Close from '@mui/icons-material/Close';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import MyAutocomplete from './MyAutocomplete';
@@ -24,6 +25,8 @@ const ReportDialog = ({ open, onClose }) => {
 	const [reportTitle, setReportTitle] = useState('');
 	const [reportDesc, setReportDesc] = useState('');
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleSnackbarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -33,7 +36,17 @@ const ReportDialog = ({ open, onClose }) => {
 		setSnackbarOpen(false);
 	};
 
-	const handleReport = () => {
+	const handleReport = (e) => {
+		e.preventDefault();
+		setIsSubmitting(true);
+
+		if (reportAddr === '') {
+			setIsSubmitting(false);
+			setAlertMessage('❗ Please enter an address!');
+			setSnackbarOpen(true);
+			return;
+		}
+
 		const newReport = {
 			address: reportAddr,
 			title: reportTitle,
@@ -51,11 +64,18 @@ const ReportDialog = ({ open, onClose }) => {
 			.post('http://localhost:4000/api/reports/new-report', newReport)
 			.then((res) => {
 				// setCrimes(res.data.data);
-				console.log(res);
+				console.log('response', res);
+				setIsSubmitting(false);
+				onClose();
+				setAlertMessage('✅ Report submitted!');
+				setSnackbarOpen(true);
 			})
-			.catch((err) => console.log(err));
-		onClose();
-		setSnackbarOpen(true);
+			.catch((err) => {
+				console.log('error', err);
+				setIsSubmitting(false);
+				setAlertMessage('😔 Something went wrong...');
+				setSnackbarOpen(true);
+			});
 	};
 
 	return (
@@ -94,131 +114,141 @@ const ReportDialog = ({ open, onClose }) => {
 					</IconButton>
 				</DialogTitle>
 				<DialogContent>
-					<Typography
-						sx={{
-							marginBottom: '5px',
-							color: 'whitesmoke',
-						}}>
-						Enter the date and time the incident took place:
-					</Typography>
-					<DateTimePicker
-						InputProps={{
-							color: 'info',
-						}}
-						label='Date and Time'
-						value={reportTime}
-						onChange={(value) => {
-							setReportTime(value);
-						}}
-						renderInput={(params) => (
-							<TextField
-								fullWidth
-								variant='outlined'
-								InputLabelProps={{
-									style: { color: '#6b6e6c' },
-								}}
-								sx={{
-									'& .MuiInputBase-root': {
-										color: 'whitesmoke',
-									},
-									svg: { color: 'whitesmoke' },
-								}}
-								{...params}
-							/>
-						)}
-					/>
-					<Typography
-						sx={{
-							marginTop: '20px',
-							marginBottom: '5px',
-							color: 'whitesmoke',
-						}}>
-						Enter the address of the incident:
-					</Typography>
-					{/* 
+					<form onSubmit={handleReport}>
+						<Typography
+							sx={{
+								marginBottom: '5px',
+								color: 'whitesmoke',
+							}}>
+							Enter the date and time the incident took place:
+						</Typography>
+						<DateTimePicker
+							InputProps={{
+								color: 'info',
+							}}
+							label='Date and Time'
+							value={reportTime}
+							onChange={(value) => {
+								setReportTime(value);
+							}}
+							renderInput={(params) => (
+								<TextField
+									fullWidth
+									variant='outlined'
+									InputLabelProps={{
+										style: { color: '#6b6e6c' },
+									}}
+									sx={{
+										'& .MuiInputBase-root': {
+											color: 'whitesmoke',
+										},
+										svg: { color: 'whitesmoke' },
+									}}
+									{...params}
+								/>
+							)}
+						/>
+						<Typography
+							sx={{
+								marginTop: '20px',
+								marginBottom: '5px',
+								color: 'whitesmoke',
+							}}>
+							Enter the address of the incident:
+						</Typography>
+						{/* 
 				apiKey={'AIzaSyA2EahkvqFTyxK4Taak5jkgQmgLbsdPzq0'}
 				for some reason this doesn't require the api key?
 			*/}
-					<MyAutocomplete
-						stateFunc={setReportAddr}
-						locationFunc={setReportLoc}
-						required
-					/>
-					<Typography
-						sx={{
-							marginTop: '20px',
-							marginBottom: '5px',
-							color: 'whitesmoke',
-						}}>
-						Enter a short, descriptive title for the incident:
-					</Typography>
-					<TextField
-						placeholder='Title'
-						sx={{
-							'& .MuiInputBase-root': {
+						<MyAutocomplete
+							stateFunc={setReportAddr}
+							locationFunc={setReportLoc}
+							required
+						/>
+						<Typography
+							sx={{
+								marginTop: '20px',
+								marginBottom: '5px',
 								color: 'whitesmoke',
-							},
-						}}
-						InputLabelProps={{
-							style: { color: '#6b6e6c' },
-						}}
-						label='Title'
-						color='info'
-						fullWidth
-						variant='outlined'
-						onChange={(event) => {
-							setReportTitle(event.target.value);
-						}}
-						required
-					/>
-					<Typography
-						sx={{
-							marginTop: '20px',
-							marginBottom: '5px',
-							color: 'whitesmoke',
-						}}>
-						Enter a longer description:
-					</Typography>
-					<TextField
-						sx={{
-							'& .MuiInputBase-root': {
+							}}>
+							Enter a short, descriptive title for the incident:
+						</Typography>
+						<TextField
+							placeholder='Title'
+							sx={{
+								'& .MuiInputBase-root': {
+									color: 'whitesmoke',
+								},
+							}}
+							InputLabelProps={{
+								style: { color: '#6b6e6c' },
+							}}
+							label='Title'
+							color='info'
+							fullWidth
+							variant='outlined'
+							onChange={(event) => {
+								setReportTitle(event.target.value);
+							}}
+							required
+						/>
+						<Typography
+							sx={{
+								marginTop: '20px',
+								marginBottom: '5px',
 								color: 'whitesmoke',
-							},
-						}}
-						InputLabelProps={{
-							style: { color: '#6b6e6c' },
-						}}
-						placeholder='Description'
-						variant='outlined'
-						color='info'
-						label='Description'
-						fullWidth
-						multiline
-						rows={4}
-						onChange={(event) => {
-							setReportDesc(event.target.value);
-						}}
-						required
-					/>
-					<Button
-						sx={{
-							marginTop: '10px',
-							width: '30%',
-							color: '#5F35AE',
-							left: '65%',
-							fontWeight: 'bold',
-							backgroundColor: 'lightgrey',
-						}}
-						onClick={handleReport}>
-						Submit
-					</Button>
+							}}>
+							Enter a longer description:
+						</Typography>
+						<TextField
+							sx={{
+								'& .MuiInputBase-root': {
+									color: 'whitesmoke',
+								},
+							}}
+							InputLabelProps={{
+								style: { color: '#6b6e6c' },
+							}}
+							placeholder='Description'
+							variant='outlined'
+							color='info'
+							label='Description'
+							fullWidth
+							multiline
+							rows={4}
+							onChange={(event) => {
+								setReportDesc(event.target.value);
+							}}
+							required
+						/>
+						<Button
+							type='submit'
+							sx={{
+								marginTop: '10px',
+								width: '30%',
+								color: '#5F35AE',
+								left: '65%',
+								fontWeight: 'bold',
+								backgroundColor: 'lightgrey',
+							}}>
+							{isSubmitting ? (
+								<CircularProgress
+									size='sm'
+									variant='plain'
+									color='info'
+								/>
+							) : (
+								'Submit'
+							)}
+						</Button>
+					</form>
 				</DialogContent>
 			</Dialog>
 			<Snackbar
 				open={snackbarOpen}
 				autoHideDuration={6000}
 				onClose={handleSnackbarClose}
-				message='Report submitted.'
+				message={alertMessage}
 			/>
 		</>
 	);
