@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import { blue } from '@mui/material/colors';
 // import mockData from '../mockData';
 
 const Map = ({ mapRef, location, crimes, setLocation, currentHighlightedKey, setHighlightedKey }) => {

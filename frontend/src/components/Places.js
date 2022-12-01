@@ -188,7 +188,7 @@ const Places = ({
 													borderRadius: 10,
 													backgroundColor: 'white',
 													...(currentHighlightedKey === incident._id) && {
-														backgroundColor: 'purple'
+														backgroundColor: '#814dde',
 													}
 												}}>
 												<Stack
@@ -199,21 +199,37 @@ const Places = ({
 													paddingX={3}>
 													<Typography
 														level='h4'
-														component='h4'>
+														component='h4'
+														// TODO: abstract this into a makestyle or something
+														sx={{
+															...(currentHighlightedKey === incident._id) && {
+																color: 'white'
+															}
+														}}>
 														<strong>
 															{incident.title}
 														</strong>
 													</Typography>
 													<Typography
 														level='h6'
-														component='h6'>
+														component='h6'
+														sx={{
+															...(currentHighlightedKey === incident._id) && {
+																color: 'white'
+															}
+														}}>
 														<strong>
 															{incident.address}
 														</strong>
 													</Typography>
 													<Typography
 														level='body2'
-														component='p'>
+														component='p'
+														sx={{
+															...(currentHighlightedKey === incident._id) && {
+																color: 'silver'
+															}
+														}}>
 														<strong>
 															{moment(
 																incident.reportedAt
@@ -222,7 +238,12 @@ const Places = ({
 													</Typography>
 													<Typography
 														level='body1'
-														component='p'>
+														component='p'
+														sx={{
+															...(currentHighlightedKey === incident._id) && {
+																color: 'white'
+															}
+														}}>
 														{incident.description}
 													</Typography>
 												</Stack>
