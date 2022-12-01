@@ -10,6 +10,8 @@ const libraries = ['places'];
 
 const Home = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
+	// this is probably going to be a waste of my time
+	const [currentHighlightedKey, setHighlightedKey] = useState("");
 
 	const { isLoaded } = useLoadScript({
 		googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY,
@@ -36,12 +38,16 @@ const Home = () => {
 				setLocation={setLocation}
 				crimes={crimes}
 				setCrimes={setCrimes}
+				currentHighlightedKey={currentHighlightedKey}
+				setHighlightedKey={setHighlightedKey}
 			/>
 			<Map
 				mapRef={mapRef}
 				location={location}
 				crimes={crimes}
 				setLocation={setLocation}
+				currentHighlightedKey={currentHighlightedKey}
+				setHighlightedKey={setHighlightedKey}
 			/>
 			{/* https://mui.com/joy-ui/react-button/ */}
 			<Button

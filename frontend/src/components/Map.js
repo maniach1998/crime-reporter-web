@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
+import { blue } from '@mui/material/colors';
 // import mockData from '../mockData';
 
-const Map = ({ mapRef, location, crimes, setLocation }) => {
+const Map = ({ mapRef, location, crimes, setLocation, currentHighlightedKey, setHighlightedKey }) => {
 	const center = useMemo(
 		() => ({ lat: 40.70835219465311, lng: -74.00525406624838 }),
 		[]
@@ -53,6 +54,8 @@ const Map = ({ mapRef, location, crimes, setLocation }) => {
 					crimes.map((crime) => (
 						<Marker
 							key={crime._id}
+							onClick={() => {setHighlightedKey(crime._id)}}
+							
 							position={{
 								lat: crime.location.coordinates[1],
 								lng: crime.location.coordinates[0],

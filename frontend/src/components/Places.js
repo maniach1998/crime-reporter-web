@@ -28,6 +28,8 @@ const Places = ({
 	setIsGettingLocation,
 	crimes,
 	setCrimes,
+	currentHighlightedKey, 
+	setHighlightedKey
 }) => {
 	// set lat and lng of the retrieved location
 	useEffect(() => {
@@ -181,8 +183,13 @@ const Places = ({
 												key={incident._id}
 												variant='soft'
 												color='info'
+												onClick={() => {setHighlightedKey(incident._id)}}
 												sx={{
 													borderRadius: 10,
+													backgroundColor: 'white',
+													...(currentHighlightedKey === incident._id) && {
+														backgroundColor: 'purple'
+													}
 												}}>
 												<Stack
 													direction='column'
