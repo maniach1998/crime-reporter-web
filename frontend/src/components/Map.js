@@ -54,7 +54,8 @@ const Map = ({ mapRef, location, crimes, setLocation, currentHighlightedKey, set
 						<Marker
 							key={crime._id}
 							onClick={() => {setHighlightedKey(crime._id)}}
-							
+							// TODO: make this not use discord for image hosting lol
+							icon={(currentHighlightedKey === crime._id) ? "https://cdn.discordapp.com/attachments/796536914827018262/1048041676947603537/mapMarker-actual.png" : undefined}
 							position={{
 								lat: crime.location.coordinates[1],
 								lng: crime.location.coordinates[0],

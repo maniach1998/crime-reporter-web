@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import usePlacesAutocomplete, {
@@ -55,6 +55,12 @@ const Places = ({
 			});
 		}
 	}, [location]);
+
+	// handle autoscrolling of the card list for highlighted crimes
+	const cardRef = useRef(null);
+	useEffect(() => {
+		cardRef.current?.scrollIntoView({behavior: 'smooth', block: 'center'});
+	}, [currentHighlightedKey])
 
 	// fetch crimes in the retrieved location from backend
 	useEffect(() => {
@@ -184,6 +190,7 @@ const Places = ({
 												variant='soft'
 												color='info'
 												onClick={() => {setHighlightedKey(incident._id)}}
+												ref={(currentHighlightedKey === incident._id) ? cardRef : undefined}
 												sx={{
 													borderRadius: 10,
 													backgroundColor: 'white',
