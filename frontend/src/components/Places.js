@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import usePlacesAutocomplete, {
@@ -28,6 +28,8 @@ const Places = ({
 	setIsGettingLocation,
 	crimes,
 	setCrimes,
+	currentHighlightedKey, 
+	setHighlightedKey
 }) => {
 	// set lat and lng of the retrieved location
 	useEffect(() => {
@@ -53,6 +55,12 @@ const Places = ({
 			});
 		}
 	}, [location]);
+
+	// handle autoscrolling of the card list for highlighted crimes
+	const cardRef = useRef(null);
+	useEffect(() => {
+		cardRef.current?.scrollIntoView({behavior: 'smooth', block: 'center'});
+	}, [currentHighlightedKey])
 
 	// fetch crimes in the retrieved location from backend
 	useEffect(() => {
@@ -181,8 +189,14 @@ const Places = ({
 												key={incident._id}
 												variant='soft'
 												color='info'
+												onClick={() => {setHighlightedKey(incident._id)}}
+												ref={(currentHighlightedKey === incident._id) ? cardRef : undefined}
 												sx={{
 													borderRadius: 10,
+													backgroundColor: 'white',
+													...(currentHighlightedKey === incident._id) && {
+														backgroundColor: '#814dde',
+													}
 												}}>
 												<Stack
 													direction='column'
@@ -192,21 +206,37 @@ const Places = ({
 													paddingX={3}>
 													<Typography
 														level='h4'
-														component='h4'>
+														component='h4'
+														// TODO: abstract this into a makestyle or something
+														sx={{
+															...(currentHighlightedKey === incident._id) && {
+																color: 'white'
+															}
+														}}>
 														<strong>
 															{incident.title}
 														</strong>
 													</Typography>
 													<Typography
 														level='h6'
-														component='h6'>
+														component='h6'
+														sx={{
+															...(currentHighlightedKey === incident._id) && {
+																color: 'white'
+															}
+														}}>
 														<strong>
 															{incident.address}
 														</strong>
 													</Typography>
 													<Typography
 														level='body2'
-														component='p'>
+														component='p'
+														sx={{
+															...(currentHighlightedKey === incident._id) && {
+																color: 'silver'
+															}
+														}}>
 														<strong>
 															{moment(
 																incident.reportedAt
@@ -215,7 +245,12 @@ const Places = ({
 													</Typography>
 													<Typography
 														level='body1'
-														component='p'>
+														component='p'
+														sx={{
+															...(currentHighlightedKey === incident._id) && {
+																color: 'white'
+															}
+														}}>
 														{incident.description}
 													</Typography>
 												</Stack>

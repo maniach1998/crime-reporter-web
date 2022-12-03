@@ -8,7 +8,7 @@ import NearMeIcon from '@mui/icons-material/NearMe';
 
 import Places from './Places';
 
-const Sidebar = ({ location, setLocation, crimes, setCrimes }) => {
+const Sidebar = ({ location, setLocation, crimes, setCrimes, currentHighlightedKey, setHighlightedKey }) => {
 	// for 'use my location' button
 	const [geoPermissions, setGeoPermissions] = useState(null);
 	const [isGettingLocation, setIsGettingLocation] = useState(false);
@@ -161,6 +161,8 @@ const Sidebar = ({ location, setLocation, crimes, setCrimes }) => {
 				setIsGettingLocation={setIsGettingLocation}
 				crimes={crimes}
 				setCrimes={setCrimes}
+				currentHighlightedKey={currentHighlightedKey}
+				setHighlightedKey={setHighlightedKey}
 			/>
 		</Box>
 	);
