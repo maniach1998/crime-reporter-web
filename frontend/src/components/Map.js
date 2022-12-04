@@ -1,8 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-// import mockData from '../mockData';
 
-const Map = ({ mapRef, location, crimes, setLocation, currentHighlightedKey, setHighlightedKey }) => {
+const Map = ({
+	mapRef,
+	location,
+	crimes,
+	setLocation,
+	currentHighlightedKey,
+	setHighlightedKey,
+}) => {
 	const center = useMemo(
 		() => ({ lat: 40.70835219465311, lng: -74.00525406624838 }),
 		[]
@@ -53,16 +59,31 @@ const Map = ({ mapRef, location, crimes, setLocation, currentHighlightedKey, set
 					crimes.map((crime) => (
 						<Marker
 							key={crime._id}
-							onClick={() => {setHighlightedKey(crime._id)}}
-							// TODO: make this not use discord for image hosting lol
-							icon={(currentHighlightedKey === crime._id) ? "https://cdn.discordapp.com/attachments/796536914827018262/1048041676947603537/mapMarker-actual.png" : undefined}
+							onClick={() => {
+								setHighlightedKey(crime._id);
+							}}
+							icon={
+								currentHighlightedKey === crime._id
+									? 'https://i.imgur.com/yj4lHNM.png'
+									: 'https://i.imgur.com/Lj1OFLn.png'
+							}
+							zIndex={
+								currentHighlightedKey === crime._id ? 999 : 1
+							}
 							position={{
 								lat: crime.location.coordinates[1],
 								lng: crime.location.coordinates[0],
 							}}
 						/>
 					))}
-				{marker && <Marker position={marker} />}
+				{marker && (
+					<Marker
+						icon='https://i.imgur.com/umepEtB.png'
+						clickable={false}
+						zIndex={999}
+						position={marker}
+					/>
+				)}
 			</GoogleMap>
 		</div>
 	);

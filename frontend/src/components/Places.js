@@ -28,8 +28,8 @@ const Places = ({
 	setIsGettingLocation,
 	crimes,
 	setCrimes,
-	currentHighlightedKey, 
-	setHighlightedKey
+	currentHighlightedKey,
+	setHighlightedKey,
 }) => {
 	// set lat and lng of the retrieved location
 	useEffect(() => {
@@ -59,8 +59,11 @@ const Places = ({
 	// handle autoscrolling of the card list for highlighted crimes
 	const cardRef = useRef(null);
 	useEffect(() => {
-		cardRef.current?.scrollIntoView({behavior: 'smooth', block: 'center'});
-	}, [currentHighlightedKey])
+		cardRef.current?.scrollIntoView({
+			behavior: 'smooth',
+			block: 'center',
+		});
+	}, [currentHighlightedKey]);
 
 	// fetch crimes in the retrieved location from backend
 	useEffect(() => {
@@ -189,14 +192,26 @@ const Places = ({
 												key={incident._id}
 												variant='soft'
 												color='info'
-												onClick={() => {setHighlightedKey(incident._id)}}
-												ref={(currentHighlightedKey === incident._id) ? cardRef : undefined}
+												onClick={() => {
+													setHighlightedKey(
+														incident._id
+													);
+												}}
+												ref={
+													currentHighlightedKey ===
+													incident._id
+														? cardRef
+														: undefined
+												}
 												sx={{
 													borderRadius: 10,
+													cursor: 'pointer',
 													backgroundColor: 'white',
-													...(currentHighlightedKey === incident._id) && {
-														backgroundColor: '#814dde',
-													}
+													...(currentHighlightedKey ===
+														incident._id && {
+														backgroundColor:
+															'#814dde',
+													}),
 												}}>
 												<Stack
 													direction='column'
@@ -209,9 +224,10 @@ const Places = ({
 														component='h4'
 														// TODO: abstract this into a makestyle or something
 														sx={{
-															...(currentHighlightedKey === incident._id) && {
-																color: 'white'
-															}
+															...(currentHighlightedKey ===
+																incident._id && {
+																color: 'white',
+															}),
 														}}>
 														<strong>
 															{incident.title}
@@ -221,9 +237,10 @@ const Places = ({
 														level='h6'
 														component='h6'
 														sx={{
-															...(currentHighlightedKey === incident._id) && {
-																color: 'white'
-															}
+															...(currentHighlightedKey ===
+																incident._id && {
+																color: 'white',
+															}),
 														}}>
 														<strong>
 															{incident.address}
@@ -233,9 +250,10 @@ const Places = ({
 														level='body2'
 														component='p'
 														sx={{
-															...(currentHighlightedKey === incident._id) && {
-																color: 'silver'
-															}
+															...(currentHighlightedKey ===
+																incident._id && {
+																color: 'silver',
+															}),
 														}}>
 														<strong>
 															{moment(
@@ -247,9 +265,10 @@ const Places = ({
 														level='body1'
 														component='p'
 														sx={{
-															...(currentHighlightedKey === incident._id) && {
-																color: 'white'
-															}
+															...(currentHighlightedKey ===
+																incident._id && {
+																color: 'white',
+															}),
 														}}>
 														{incident.description}
 													</Typography>
