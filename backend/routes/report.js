@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 		.toString();
 	const distance = '10mi';
 
-	const apiUrl = `https://api.crimeometer.com/v1/incidents/raw-data?lat=${lat}&lon=${lng}&distance=${distance}&datetime_ini=${now}&datetime_end=${aWeekAgo}&page=1`;
+	const apiUrl = `https://api.crimeometer.com/v1/incidents/raw-data?lat=${lat}&lon=${lng}&distance=${distance}&datetime_ini=${aWeekAgo}&datetime_end=${now}&page=1`;
 
 	const apiRes = await fetch(apiUrl, {
 		headers: {
