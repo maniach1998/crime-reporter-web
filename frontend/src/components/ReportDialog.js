@@ -27,6 +27,7 @@ const ReportDialog = ({ open, onClose }) => {
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isTimeValid, setTimeValid] = useState(true);
 
 	const handleSnackbarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -36,9 +37,28 @@ const ReportDialog = ({ open, onClose }) => {
 		setSnackbarOpen(false);
 	};
 
+	const handleReportTimeChange = (value) => {
+		// if the value is past the current time deny it
+		// also don't let it submit
+		if(value > date){
+			console.log("tried to set a time past the current time");
+			setTimeValid(false);
+		} else {
+			setReportTime(value);
+			setTimeValid(true);
+		}
+	}
+
 	const handleReport = (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
+
+		if(!isTimeValid){
+			setIsSubmitting(false);
+			setAlertMessage('Please enter a valid time!');
+			setSnackbarOpen(true);
+			return;
+		}
 
 		if (reportAddr === '') {
 			setIsSubmitting(false);
@@ -129,7 +149,7 @@ const ReportDialog = ({ open, onClose }) => {
 							label='Date and Time'
 							value={reportTime}
 							onChange={(value) => {
-								setReportTime(value);
+								handleReportTimeChange(value);
 							}}
 							renderInput={(params) => (
 								<TextField
