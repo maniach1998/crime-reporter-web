@@ -22,7 +22,7 @@ var date = new Date();
 const crimeTypes = [
 	{ type: 'Robbery' },
 	{ type: 'Murder' },
-	{ type: 'Rape' },
+	{ type: 'Sexual Assualt' },
 	{ type: 'Aggravated Assault' },
 	{ type: 'Burglary' },
 	{ type: 'Larceny-theft' },
