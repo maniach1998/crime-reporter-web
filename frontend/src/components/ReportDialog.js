@@ -11,12 +11,25 @@ import {
 	Snackbar,
 } from '@mui/material';
 import CircularProgress from '@mui/joy/CircularProgress';
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Close from '@mui/icons-material/Close';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import MyAutocomplete from './MyAutocomplete';
-import { color } from '@mui/system';
 
 var date = new Date();
+const crimeTypes = [
+	{ type: 'Robbery' },
+	{ type: 'Murder' },
+	{ type: 'Rape' },
+	{ type: 'Aggravated Assault' },
+	{ type: 'Burglary' },
+	{ type: 'Larceny-theft' },
+	{ type: 'Motor Vehicle Theft' },
+	{ type: 'Arson' },
+	{ type: 'Other' },
+];
 
 const ReportDialog = ({ open, onClose }) => {
 	const [reportTime, setReportTime] = useState(date.toUTCString());
@@ -67,6 +80,13 @@ const ReportDialog = ({ open, onClose }) => {
 			return;
 		}
 
+		if (reportTitle === '') {
+			setIsSubmitting(false);
+			setAlertMessage('❗ Please select a type for the crime!');
+			setSnackbarOpen(true);
+			return;
+		}
+
 		const newReport = {
 			address: reportAddr,
 			title: reportTitle,
@@ -75,9 +95,6 @@ const ReportDialog = ({ open, onClose }) => {
 			lng: reportLoc.lng,
 			lat: reportLoc.lat,
 		};
-		// console.log(
-		// 	`Time: ${reportTime}; Address: ${reportAddr}; Location: ${reportLoc.lat},${reportLoc.lng}; Title: ${reportTitle}; Desc: ${reportDesc}`
-		// );
 
 		console.log(newReport);
 		axios
@@ -129,7 +146,7 @@ const ReportDialog = ({ open, onClose }) => {
 					<IconButton
 						aria-label='close'
 						onClick={onClose}
-						color='secondary'>
+						color='info'>
 						<Close />
 					</IconButton>
 				</DialogTitle>
@@ -185,7 +202,35 @@ const ReportDialog = ({ open, onClose }) => {
 							locationFunc={setReportLoc}
 							required
 						/>
+
 						<Typography
+							sx={{
+								marginTop: '20px',
+								marginBottom: '5px',
+								color: 'whitesmoke',
+							}}>
+							Select the type of the crime:
+						</Typography>
+						<Select
+							color='info'
+							variant='soft'
+							placeholder='type of crime'
+							onChange={(e) =>
+								setReportTitle(e.target.textContent)
+							}
+							indicator={<KeyboardArrowDown />}>
+							{crimeTypes.map((crimeType) => (
+								<Option
+									key={crimeType.type}
+									color='info'
+									variant='soft'
+									value={crimeType.type}>
+									{crimeType.type}
+								</Option>
+							))}
+						</Select>
+
+						{/* <Typography
 							sx={{
 								marginTop: '20px',
 								marginBottom: '5px',
@@ -211,7 +256,8 @@ const ReportDialog = ({ open, onClose }) => {
 								setReportTitle(event.target.value);
 							}}
 							required
-						/>
+						/> */}
+
 						<Typography
 							sx={{
 								marginTop: '20px',
