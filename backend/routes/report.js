@@ -23,56 +23,58 @@ router.get('/', async (req, res) => {
 		},
 	]);
 
-	const now = moment(moment.now()).format('YYYY-MM-DD HH:mm:ss').toString();
-	const aWeekAgo = moment(moment.now())
-		.day(-7)
-		.startOf('day')
-		.format('YYYY-MM-DD HH:mm:ss')
-		.toString();
-	const distance = '10mi';
+	return res.send({ data: reports });
 
-	const apiUrl = `https://api.crimeometer.com/v1/incidents/raw-data?lat=${lat}&lon=${lng}&distance=${distance}&datetime_ini=${aWeekAgo}&datetime_end=${now}&page=1`;
+	// const now = moment(moment.now()).format('YYYY-MM-DD HH:mm:ss').toString();
+	// const aWeekAgo = moment(moment.now())
+	// 	.day(-7)
+	// 	.startOf('day')
+	// 	.format('YYYY-MM-DD HH:mm:ss')
+	// 	.toString();
+	// const distance = '10mi';
 
-	const apiRes = await fetch(apiUrl, {
-		headers: {
-			'Content-Type': 'application/json',
-			'x-api-key': process.env.API_KEY,
-		},
-	});
-	const response = await apiRes.json();
+	// const apiUrl = `https://api.crimeometer.com/v1/incidents/raw-data?lat=${lat}&lon=${lng}&distance=${distance}&datetime_ini=${aWeekAgo}&datetime_end=${now}&page=1`;
+
+	// const apiRes = await fetch(apiUrl, {
+	// 	headers: {
+	// 		'Content-Type': 'application/json',
+	// 		'x-api-key': process.env.API_KEY,
+	// 	},
+	// });
+	// const response = await apiRes.json();
+	// const response = mockData;
 
 	// if the API responds with data
-	if (response.total_incidents !== 0) {
-		const apiResponse = response.incidents.map(
-			(crime) =>
-				new Report({
-					address: crime.incident_address,
-					title: crime.incident_offense,
-					description: crime.incident_offense_detail_description,
-					reportedAt: crime.incident_date,
-					location: {
-						type: 'Point',
-						coordinates: [
-							crime.incident_longitude,
-							crime.incident_latitude,
-						],
-					},
-				})
-		);
+	// if (response.total_incidents !== 0) {
+	// 	const apiResponse = response.incidents.map(
+	// 		(crime) =>
+	// 			new Report({
+	// 				address: crime.incident_address,
+	// 				title: crime.incident_offense,
+	// 				description: crime.incident_offense_detail_description,
+	// 				reportedAt: crime.incident_date,
+	// 				location: {
+	// 					type: 'Point',
+	// 					coordinates: [
+	// 						crime.incident_longitude,
+	// 						crime.incident_latitude,
+	// 					],
+	// 				},
+	// 			})
+	// 	);
 
-		// merge crime arrays and sort to show latest crimes
-		const data = apiResponse
-			.concat(reports)
-			.sort(
-				(a, b) =>
-					new Date(b.reportedAt).getTime() -
-					new Date(a.reportedAt).getTime()
-			);
+	// merge crime arrays and sort to show latest crimes
+	// const data = reports.concat(apiResponse);
+	// .sort(
+	// 	(a, b) =>
+	// 		new Date(b.reportedAt).getTime() -
+	// 		new Date(a.reportedAt).getTime()
+	// );
 
-		res.send({ data });
-	} else {
-		res.send({ data: reports });
-	}
+	// 	res.send({ data });
+	// } else {
+	// 	res.send({ data: reports });
+	// }
 });
 
 router.post('/new-report', async (req, res) => {
