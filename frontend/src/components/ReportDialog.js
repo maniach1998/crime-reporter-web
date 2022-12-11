@@ -214,7 +214,7 @@ const ReportDialog = ({ open, onClose }) => {
 						<Select
 							color='info'
 							variant='soft'
-							placeholder='type of crime'
+							placeholder='Select Crime Type'
 							onChange={(e) =>
 								setReportTitle(e.target.textContent)
 							}
